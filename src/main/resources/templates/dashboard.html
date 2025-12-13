@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="card">
+                <h1>Добро пожаловать в систему "Авиакомпания"</h1>
+
+                <!-- <div sec:authorize="isAuthenticated()" class="alert alert-info">
+                    <p><strong>Вы вошли под логином:</strong> <span sec:authentication="name">Пользователь</span></p>
+                    <p><strong>Ваша роль:</strong> <span sec:authentication="authorities">ROLE_PASSENGER</span></p>
+                </div> -->
+
+                <h2>Навигация по модулям</h2>
+
+                <div class="module-grid">
+                    <!-- ПАССАЖИР -->
+                    <div sec:authorize="hasAuthority('passenger')" class="module-card">
+                        <h3>Модуль Пассажира</h3>
+                        <ul>
+                            <li><a th:href="@{/search/flights}">Поиск и бронирование рейсов</a></li>
+                            <li><a th:href="@{/passenger/bookings}">Мои бронирования</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- BOOKING STAFF -->
+                    <div sec:authorize="hasAnyAuthority('booking_staff')" class="module-card">
+                        <h3>Модуль сотрудника бронирования</h3>
+                        <!-- <p class="text-secondary" style="font-size: 0.9rem; margin-bottom: var(--spacing-sm);">Сотрудник бронирования</p> -->
+                        <ul>
+                            <li><a th:href="@{/booking-staff/aircrafts}">Управление самолетами</a></li>
+                            <li><a th:href="@{/booking-staff/flights}">Управление расписанием рейсов</a></li>
+                            <li><a th:href="@{/booking-staff/bookings}">Управление бронированиями</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- ПИЛОТ -->
+                    <div sec:authorize="hasAuthority('pilot')" class="module-card">
+                        <h3>Модуль Пилота</h3>
+                        <ul>
+                            <li><a th:href="@{/pilot/flights}">Ведение лётных журналов</a></li>
+                            <li><a th:href="@{/pilot/logs}">История летных журналов</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- АДМИНИСТРАТОР -->
+                    <div sec:authorize="hasAuthority('admin')" class="module-card">
+                        <h3>Модули сотрудников и пассажиров</h3>
+                        <ul>
+                            <li><a th:href="@{/booking-staff/aircrafts}">Управление самолетами</a></li>
+                            <li><a th:href="@{/booking-staff/flights}">Управление расписанием рейсов</a></li>
+                            <li><a th:href="@{/booking-staff/bookings}">Управление бронированиями</a></li>
+                            <li><a th:href="@{/search/flights}">Поиск и бронирование рейсов</a></li>
+                            <!-- <li><a th:href="@{/pilot/flights}">Ведение лётных журналов</a></li> -->
+                            <li><a th:href="@{/pilot/logs}">История летных журналов</a></li>
+                        </ul>
+                    </div>
+
+                    <div sec:authorize="hasAuthority('admin')" class="module-card">
+                        <h3>Модуль Администратора</h3>
+                        <ul>
+                            <li><a th:href="@{/admin/users}">Управление ролями пользователей</a></li>
+                            <li><a th:href="@{/admin/stats}">Просмотр статистики</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+</body>
+</html>

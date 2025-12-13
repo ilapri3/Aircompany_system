@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} ?: 'Авиакомпания'">Авиакомпания</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" th:fragment="header">
+        <nav class="navbar">
+            <a th:href="@{/dashboard}" class="navbar-brand">✈ Авиакомпания</a>
+            <ul class="navbar-nav">
+                <li sec:authorize="isAuthenticated()">
+                    <div class="user-info">
+                        <span sec:authentication="name">Пользователь</span>
+                        <a th:href="@{/logout}" class="btn btn-outline btn-sm">Выйти</a>
+                    </div>
+                </li>
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" class="btn btn-primary btn-sm">Войти</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div th:replace="${content}"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" th:fragment="footer">
+        <p>&copy; 2025 Авиакомпания. Учебный проект.</p>
+    </footer>
+</body>
+</html>
+

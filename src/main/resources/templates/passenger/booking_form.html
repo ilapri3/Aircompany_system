@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бронирование рейса</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container" style="max-width: 800px;">
+            <div class="card">
+                <h1>Данные пассажира</h1>
+
+                <div th:if="${error}" class="alert alert-error">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <form th:action="@{/passenger/bookings/create}"
+                      method="post"
+                      th:object="${form}">
+
+                    <input type="hidden" th:field="*{flightId}"/>
+
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">Имя</label>
+                        <input type="text" id="firstName" th:field="*{firstName}" 
+                               class="form-control" placeholder="Введите имя" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Фамилия</label>
+                        <input type="text" id="lastName" th:field="*{lastName}" 
+                               class="form-control" placeholder="Введите фамилию" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="passportNumber" class="form-label">Номер паспорта</label>
+                        <input type="text" id="passportNumber" th:field="*{passportNumber}" 
+                               class="form-control" placeholder="Введите номер паспорта" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail" class="form-label">Email</label>
+                        <input type="email" id="contactEmail" th:field="*{contactEmail}" 
+                               class="form-control" placeholder="example@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactPhone" class="form-label">Телефон</label>
+                        <input type="text" id="contactPhone" th:field="*{contactPhone}" 
+                               class="form-control" placeholder="+7 (999) 123-45-67" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seatNumber" class="form-label">Выберите место</label>
+                        <select id="seatNumber" th:field="*{seatNumber}" class="form-control" required>
+                            <option value="">-- Выберите место --</option>
+                            <option th:each="seat : ${availableSeats}"
+                                    th:value="${seat}"
+                                    th:text="${seat + (#lists.contains(occupiedSeats, seat) ? ' (занято)' : '')}"
+                                    th:disabled="${#lists.contains(occupiedSeats, seat)}"
+                                    th:style="${#lists.contains(occupiedSeats, seat)} ? 'color: #999; background-color: #f5f5f5;' : ''">
+                            </option>
+                        </select>
+                        <small class="form-text" style="color: #666; margin-top: 5px; display: block;">
+                            Занятые места отмечены серым цветом и недоступны для выбора
+                        </small>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Подтвердить бронирование</button>
+                        <a th:href="@{/search/flights}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+</body>
+</html>

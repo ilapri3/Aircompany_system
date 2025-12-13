@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Форма бронирования</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container" style="max-width: 800px;">
+            <div class="card">
+                <h1 th:text="${pageTitle}">Редактировать бронирование</h1>
+
+                <form th:action="@{/booking-staff/bookings/save}" th:object="${booking}" method="post">
+                    <input type="hidden" th:field="*{bookingId}" />
+
+                    <div class="form-group">
+                        <label for="flight" class="form-label">Рейс</label>
+                        <select id="flight" th:field="*{flight}" class="form-control" required>
+                            <option value="">-- Выберите рейс --</option>
+                            <option th:each="f : ${flights}"
+                                    th:value="${f.flightId}"
+                                    th:text="${f.flightNumber + ' (' + f.departureCity + ' - ' + f.arrivalCity + ')'}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user" class="form-label">Пассажир</label>
+                        <select id="user" th:field="*{user}" class="form-control" required>
+                            <option value="">-- Выберите пассажира --</option>
+                            <option th:each="u : ${users}"
+                                    th:value="${u.userId}"
+                                    th:text="${u.username}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seatNumber" class="form-label">Номер места</label>
+                        <select id="seatNumber" th:field="*{seatNumber}" class="form-control" required>
+                            <option value="">-- Выберите место --</option>
+                            <option th:if="${availableSeats != null}" 
+                                    th:each="seat : ${availableSeats}"
+                                    th:value="${seat}"
+                                    th:text="${seat}"
+                                    th:selected="${booking.seatNumber == seat}"
+                                    th:disabled="${#lists.contains(occupiedSeats, seat) and booking.seatNumber != seat}"
+                                    th:style="${#lists.contains(occupiedSeats, seat) and booking.seatNumber != seat} ? 'color: #999; background-color: #f5f5f5;' : ''">
+                            </option>
+                        </select>
+                        <small class="form-text" style="color: #666; margin-top: 5px; display: block;" 
+                               th:if="${availableSeats == null}">
+                            Выберите рейс, чтобы увидеть доступные места. Или введите номер места вручную (например: 15A).
+                        </small>
+                        <small class="form-text" style="color: #666; margin-top: 5px; display: block;" 
+                               th:if="${availableSeats != null}">
+                            Занятые места отмечены серым цветом. Вы можете изменить место на любое доступное.
+                        </small>
+                    </div>
+                    
+                    <div th:if="${error}" class="alert alert-error" style="margin-top: 10px;">
+                        <p th:text="${error}"></p>
+                    </div>
+
+                    <input type="hidden" th:field="*{status}" />
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a th:href="@{/booking-staff/bookings}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flightSelect = document.getElementById('flight');
+            const seatSelect = document.getElementById('seatNumber');
+            const currentSeatNumber = seatSelect.value;
+            
+            if (flightSelect) {
+                flightSelect.addEventListener('change', function() {
+                    const flightId = this.value;
+                    
+                    if (!flightId) {
+                        // Очищаем список мест, если рейс не выбран
+                        seatSelect.innerHTML = '<option value="">-- Выберите место --</option>';
+                        return;
+                    }
+                    
+                    // Показываем индикатор загрузки
+                    seatSelect.disabled = true;
+                    seatSelect.innerHTML = '<option value="">Загрузка...</option>';
+                    
+                    // Запрашиваем список мест с сервера
+                    fetch('/booking-staff/bookings/seats/' + flightId)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Очищаем список мест
+                            seatSelect.innerHTML = '<option value="">-- Выберите место --</option>';
+                            
+                            // Добавляем доступные места
+                            data.availableSeats.forEach(function(seat) {
+                                const option = document.createElement('option');
+                                option.value = seat;
+                                option.textContent = seat;
+                                
+                                // Помечаем занятые места как недоступные
+                                if (data.occupiedSeats.includes(seat) && seat !== currentSeatNumber) {
+                                    option.disabled = true;
+                                    option.style.color = '#999';
+                                    option.style.backgroundColor = '#f5f5f5';
+                                }
+                                
+                                // Выбираем текущее место, если оно есть
+                                if (seat === currentSeatNumber) {
+                                    option.selected = true;
+                                }
+                                
+                                seatSelect.appendChild(option);
+                            });
+                            
+                            seatSelect.disabled = false;
+                        })
+                        .catch(error => {
+                            console.error('Ошибка при загрузке мест:', error);
+                            seatSelect.innerHTML = '<option value="">Ошибка загрузки мест</option>';
+                            seatSelect.disabled = false;
+                        });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

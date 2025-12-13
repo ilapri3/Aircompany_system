@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои лётные отчёты</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="card">
+                <h1 th:text="${isAdmin ? 'История летных журналов' : 'Мои лётные отчёты'}">Мои лётные отчёты</h1>
+
+                <div th:if="${#lists.isEmpty(logs)}" class="alert alert-info">
+                    <p th:text="${isAdmin ? 'Лётных журналов пока нет.' : 'У вас пока нет лётных отчётов.'}">У вас пока нет лётных отчётов.</p>
+                </div>
+
+                <div th:if="${!#lists.isEmpty(logs)}" class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th th:if="${isAdmin}">Пилот</th>
+                                <th>Рейс</th>
+                                <th>Откуда</th>
+                                <th>Куда</th>
+                                <th>Дата отчёта</th>
+                                <th>Техническая проверка</th>
+                                <th>Заметки</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="l : ${logs}">
+                                <td th:if="${isAdmin}" th:text="${l.pilot.username}"></td>
+                                <td th:text="${l.flight.flightNumber}"></td>
+                                <td th:text="${l.flight.departureCity}"></td>
+                                <td th:text="${l.flight.arrivalCity}"></td>
+                                <td th:text="${#temporals.format(l.logTime, 'dd.MM.yyyy HH:mm')}"></td>
+                                <td>
+                                    <span th:if="${l.technicalCheck != null and l.technicalCheck.name() == 'pass'}" 
+                                          style="color: var(--success-color); font-weight: 600;">
+                                        ✓ Проверка пройдена
+                                    </span>
+                                    <span th:if="${l.technicalCheck != null and l.technicalCheck.name() == 'fail'}" 
+                                          style="color: var(--danger-color); font-weight: 600;">
+                                        ✗ Обнаружены проблемы
+                                    </span>
+                                    <span th:if="${l.technicalCheck == null}" 
+                                          style="color: #999;">
+                                        Не указано
+                                    </span>
+                                </td>
+                                <td th:text="${l.notes ?: '-'}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3">
+                    <a th:href="@{/dashboard}" class="btn btn-secondary">⬅ Назад</a>
+                    <a th:if="${!isAdmin}" th:href="@{/pilot/flights}" class="btn btn-outline">Мои рейсы</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+</body>
+</html>

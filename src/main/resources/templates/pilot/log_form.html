@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новый лётный отчёт</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container" style="max-width: 800px;">
+            <div class="card">
+                <h1>Добавить отчёт о полёте</h1>
+
+                <form th:action="@{/pilot/logs/save}" method="post">
+                    <input type="hidden" name="flightId" th:value="${flightId}"/>
+
+                    <div class="form-group">
+                        <label for="technicalCheck" class="form-label">Техническая проверка</label>
+                        <select id="technicalCheck" name="technicalCheck" class="form-control" required>
+                            <option value="pass">Проверка пройдена</option>
+                            <option value="fail">Обнаружены проблемы</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes" class="form-label">Заметки пилота</label>
+                        <textarea id="notes" name="notes" class="form-control" 
+                                  rows="6" placeholder="Введите заметки о полёте..."></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Сохранить отчёт</button>
+                        <a th:href="@{/pilot/logs}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+</body>
+</html>

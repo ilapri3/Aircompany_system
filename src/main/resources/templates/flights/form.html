@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${flight.flightId == null ? 'Добавить новый рейс' : 'Редактировать рейс'}"></title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container" style="max-width: 800px;">
+            <div class="card">
+                <h1 th:text="${flight.flightId == null ? 'Добавить новый рейс' : 'Редактирование рейса № ' + flight.flightNumber}"></h1>
+
+                <div th:if="${error}" class="alert alert-error" style="margin-top: 10px;">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <form th:action="@{/booking-staff/flights/save}" th:object="${flight}" method="post">
+                    <input type="hidden" th:field="*{flightId}" />
+
+                    <div class="form-group">
+                        <label for="flightNumber" class="form-label">Номер рейса</label>
+                        <input type="text" id="flightNumber" th:field="*{flightNumber}" 
+                               class="form-control" placeholder="Например: SU-1234" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pilotId" class="form-label">Пилот</label>
+                        <select id="pilotId" name="pilotId" class="form-control" required>
+                            <option value="">Не назначен</option>
+                            <option th:each="p : ${pilots}"
+                                    th:value="${p.userId}"
+                                    th:text="${p.username}"
+                                    th:selected="${flight.pilot != null and flight.pilot.userId == p.userId}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departureCity" class="form-label">Город отправления</label>
+                        <input type="text" id="departureCity" th:field="*{departureCity}" 
+                               class="form-control" placeholder="Например: Москва" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrivalCity" class="form-label">Город прибытия</label>
+                        <input type="text" id="arrivalCity" th:field="*{arrivalCity}" 
+                               class="form-control" placeholder="Например: Санкт-Петербург" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departureTime" class="form-label">Время отправления</label>
+                        <input type="datetime-local" id="departureTime" name="departureTime" 
+                               th:value="${flight.departureTime != null ? #temporals.format(flight.departureTime, 'yyyy-MM-dd') + 'T' + #temporals.format(flight.departureTime, 'HH:mm') : ''}"
+                               class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrivalTime" class="form-label">Время прибытия</label>
+                        <input type="datetime-local" id="arrivalTime" name="arrivalTime" 
+                               th:value="${flight.arrivalTime != null ? #temporals.format(flight.arrivalTime, 'yyyy-MM-dd') + 'T' + #temporals.format(flight.arrivalTime, 'HH:mm') : ''}"
+                               class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aircraftId" class="form-label">Самолет</label>
+                        <select id="aircraftId" name="aircraftId" class="form-control" required>
+                            <option value="">-- Выберите самолет --</option>
+                            <option th:each="a : ${aircrafts}"
+                                    th:value="${a.aircraftId}"
+                                    th:text="${a.model} + ' (ID: ' + ${a.aircraftId} + ')'"
+                                    th:selected="${flight.aircraft != null and flight.aircraft.aircraftId == a.aircraftId}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status" class="form-label">Статус</label>
+                        <select id="status" th:field="*{status}" class="form-control" required>
+                            <option th:each="stat : ${T(org.example.aircompany.model.Flight.FlightStatus).values()}"
+                                    th:value="${stat}" th:text="${stat}"></option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary" 
+                                th:text="${flight.flightId == null ? 'Добавить рейс' : 'Сохранить изменения'}"></button>
+                        <a th:href="@{/booking-staff/flights}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+</body>
+</html>

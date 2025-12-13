@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика системы</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="d-flex" style="justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                    <h1>Статистика системы</h1>
+                    <a th:href="@{/dashboard}" class="btn btn-secondary">⬅ Вернуться на главную</a>
+                </div>
+
+                <div class="module-grid">
+                    <div class="module-card">
+                        <h3>Пользователи</h3>
+                        <ul class="stats-list">
+                            <li>
+                                <span>Всего пользователей:</span>
+                                <strong th:text="${totalUsers}"></strong>
+                            </li>
+                            <li>
+                                <span>Пассажиров:</span>
+                                <strong th:text="${totalPassengers}"></strong>
+                            </li>
+                            <li>
+                                <span>Пилотов:</span>
+                                <strong th:text="${totalPilots}"></strong>
+                            </li>
+                            <li>
+                                <span>Сотрудников бронирования:</span>
+                                <strong th:text="${totalStaff}"></strong>
+                            </li>
+                            <li>
+                                <span>Администраторов:</span>
+                                <strong th:text="${totalAdmins}"></strong>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Самолёты</h3>
+                        <ul class="stats-list">
+                            <li>
+                                <span>Активные:</span>
+                                <strong th:text="${aircraftActive}"></strong>
+                            </li>
+                            <li>
+                                <span>На обслуживании:</span>
+                                <strong th:text="${aircraftMaintenance}"></strong>
+                            </li>
+                            <li>
+                                <span>В полёте:</span>
+                                <strong th:text="${aircraftInFlight}"></strong>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Рейсы и бронирования</h3>
+                        <ul class="stats-list">
+                            <li>
+                                <span>Всего рейсов:</span>
+                                <strong th:text="${totalFlights}"></strong>
+                            </li>
+                            <li>
+                                <span>Всего бронирований:</span>
+                                <strong th:text="${totalBookings}"></strong>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Пилоты</h3>
+                        <ul class="stats-list">
+                            <li>
+                                <span>Записей в лётных журналах:</span>
+                                <strong th:text="${totalFlightLogs}"></strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+</body>
+</html>
