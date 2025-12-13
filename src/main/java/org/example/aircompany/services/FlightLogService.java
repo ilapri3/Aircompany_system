@@ -8,49 +8,8 @@ import org.example.aircompany.repositories.AircraftRepository;
 import org.example.aircompany.repositories.FlightLogRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-//
-//@Service
-//public class FlightLogService {
-//
-//    private final FlightLogRepository flightLogRepository;
-//    private final FlightRepository flightRepository;
-//
-//    public FlightLogService(FlightLogRepository flightLogRepository,
-//                            FlightRepository flightRepository) {
-//        this.flightLogRepository = flightLogRepository;
-//        this.flightRepository = flightRepository;
-//    }
-//
-//    // Сохранение записи
-//    public FlightLog saveLog(FlightLog log) {
-//        return flightLogRepository.save(log);
-//    }
-//
-//    // Логи пилота
-//    public List<FlightLog> findLogsByPilot(User pilot) {
-//        return flightLogRepository.findAll()
-//                .stream()
-//                .filter(log -> log.getPilot().equals(pilot))
-//                .toList();
-//    }
-//
-//    // Логи по рейсу
-//    public List<FlightLog> findLogsByFlight(Long flightId) {
-//        Flight flight = flightRepository.findById(flightId)
-//                .orElseThrow(() -> new IllegalArgumentException("Рейс не найден"));
-//        return flightLogRepository.findAll()
-//                .stream()
-//                .filter(l -> l.getFlight().equals(flight))
-//                .toList();
-//    }
-//
-//    public List<FlightLog> findAll() {
-//        return flightLogRepository.findAll();
-//    }
-//
-//}
+
 @Service
 public class FlightLogService {
 

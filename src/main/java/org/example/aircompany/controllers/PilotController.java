@@ -29,22 +29,21 @@ public class PilotController {
         this.userService = userService;
     }
 
-    // ------------------ СПИСОК РЕЙСОВ ПИЛОТА ------------------
-
+    // Список рейсов пилота
     @GetMapping("/flights")
     public String pilotFlights(@AuthenticationPrincipal UserDetails pilotDetails,
                                Model model) {
 
         User pilot = userService.findByUsername(pilotDetails.getUsername());
 
-        // Показываем ТОЛЬКО рейсы, назначенные этому пилоту, для которых еще нет отчетов
+        // Показываем только рейсы, назначенные этому пилоту, для которых еще нет отчетов
         model.addAttribute("flights", flightService.findFlightsByPilotWithoutLogs(pilot));
 
         return "pilot/flights";
     }
 
 
-    // ------------------ СПИСОК ЛЁТНЫХ ОТЧЁТОВ ------------------
+    // Список летных отчетов
 
     @GetMapping("/logs")
     public String listLogs(@AuthenticationPrincipal UserDetails pilotDetails,
@@ -52,8 +51,8 @@ public class PilotController {
 
         User currentUser = userService.findByUsername(pilotDetails.getUsername());
         
-        // Если пользователь - админ, показываем все логи из БД
-        // Если пользователь - пилот, показываем только его логи
+        // Если пользователь админ, то показываем все логи из БД
+        // Если пользователь пилот, то показываем только его логи
         if (currentUser.getRole() == UserRole.admin) {
             model.addAttribute("logs", flightLogService.findAll());
             model.addAttribute("isAdmin", true);
@@ -66,7 +65,7 @@ public class PilotController {
     }
 
 
-    // ------------------ ФОРМА НОВОГО ЛЁТНОГО ОТЧЁТА ------------------
+    // Форма нового летного отчета
 
     @GetMapping("/logs/new")
     public String newLogForm(@AuthenticationPrincipal UserDetails pilotDetails,
@@ -82,6 +81,7 @@ public class PilotController {
         if (flight.getPilot() == null || 
             flight.getPilot().getUserId() == null || 
             !flight.getPilot().getUserId().equals(pilot.getUserId())) {
+
             // Перенаправляем на страницу рейсов с сообщением об ошибке
             model.addAttribute("error", "Вы не назначены на этот рейс. Вы можете создавать отчёты только для рейсов, назначенных вам.");
             model.addAttribute("flights", flightService.findFlightsByPilotWithoutLogs(pilot));
@@ -102,7 +102,7 @@ public class PilotController {
     }
 
 
-    // ------------------ СОХРАНЕНИЕ ЛЁТНОГО ОТЧЁТА ------------------
+    // Сохранение летного отчета
 
     @PostMapping("/logs/save")
     public String saveLog(@AuthenticationPrincipal UserDetails pilotDetails,
@@ -120,6 +120,7 @@ public class PilotController {
         if (flight.getPilot() == null || 
             flight.getPilot().getUserId() == null || 
             !flight.getPilot().getUserId().equals(pilot.getUserId())) {
+
             // Перенаправляем на страницу рейсов с сообщением об ошибке
             model.addAttribute("error", "Вы не можете добавить отчёт к рейсу, на который не назначены.");
             model.addAttribute("flights", flightService.findFlightsByPilotWithoutLogs(pilot));

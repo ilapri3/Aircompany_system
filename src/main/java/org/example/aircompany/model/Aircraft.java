@@ -2,7 +2,7 @@ package org.example.aircompany.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString; // <-- ДОБАВИТЬ ЭТОТ ИМПОРТ
+import lombok.ToString;
 import java.util.List;
 
 @Entity
@@ -21,7 +21,7 @@ public class Aircraft {
     private String registration;
 
     @Column(name = "seat_capacity")
-    private Integer seatCapacity = 30; // По умолчанию 30 мест
+    private Integer seatCapacity = 30;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -33,6 +33,6 @@ public class Aircraft {
 
     // Связь OneToMany с Flight
     @OneToMany(mappedBy = "aircraft")
-    @ToString.Exclude // <-- ДОБАВИТЬ ЭТУ АННОТАЦИЮ
+    @ToString.Exclude
     private List<Flight> flights;
 }

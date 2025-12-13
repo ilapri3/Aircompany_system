@@ -55,7 +55,7 @@ public class PassengerFlightController {
             model.addAttribute("flights", flights);
             model.addAttribute("searchPerformed", true);
 
-            // 🔒 защита от повторного бронирования
+            // защита от повторного бронирования
             User user = userService.findByUsername(userDetails.getUsername());
             List<Booking> bookings = bookingService.findBookingsByUser(user);
 

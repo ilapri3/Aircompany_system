@@ -14,12 +14,6 @@
         <div class="container">
             <div class="card">
                 <h1>Добро пожаловать в систему "Авиакомпания"</h1>
-
-                <!-- <div sec:authorize="isAuthenticated()" class="alert alert-info">
-                    <p><strong>Вы вошли под логином:</strong> <span sec:authentication="name">Пользователь</span></p>
-                    <p><strong>Ваша роль:</strong> <span sec:authentication="authorities">ROLE_PASSENGER</span></p>
-                </div> -->
-
                 <h2>Навигация по модулям</h2>
 
                 <div class="module-grid">
@@ -35,7 +29,6 @@
                     <!-- BOOKING STAFF -->
                     <div sec:authorize="hasAnyAuthority('booking_staff')" class="module-card">
                         <h3>Модуль сотрудника бронирования</h3>
-                        <!-- <p class="text-secondary" style="font-size: 0.9rem; margin-bottom: var(--spacing-sm);">Сотрудник бронирования</p> -->
                         <ul>
                             <li><a th:href="@{/booking-staff/aircrafts}">Управление самолетами</a></li>
                             <li><a th:href="@{/booking-staff/flights}">Управление расписанием рейсов</a></li>
@@ -60,7 +53,6 @@
                             <li><a th:href="@{/booking-staff/flights}">Управление расписанием рейсов</a></li>
                             <li><a th:href="@{/booking-staff/bookings}">Управление бронированиями</a></li>
                             <li><a th:href="@{/search/flights}">Поиск и бронирование рейсов</a></li>
-                            <!-- <li><a th:href="@{/pilot/flights}">Ведение лётных журналов</a></li> -->
                             <li><a th:href="@{/pilot/logs}">История летных журналов</a></li>
                         </ul>
                     </div>

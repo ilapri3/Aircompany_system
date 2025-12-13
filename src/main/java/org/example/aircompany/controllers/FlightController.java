@@ -3,7 +3,7 @@ package org.example.aircompany.controllers;
 import org.example.aircompany.model.Aircraft;
 import org.example.aircompany.model.Flight;
 import org.example.aircompany.model.User;
-import org.example.aircompany.services.AircraftService; // Убедитесь, что этот сервис существует
+import org.example.aircompany.services.AircraftService;
 import org.example.aircompany.services.FlightService;
 import org.example.aircompany.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class FlightController {
     private final AircraftService aircraftService;
     private final UserService userService;
 
-    // Инжекция зависимостей
+    // Зависимости
     public FlightController(FlightService flightService, AircraftService aircraftService, UserService userService) {
         this.flightService = flightService;
         this.aircraftService = aircraftService;
@@ -30,7 +30,6 @@ public class FlightController {
     public String listFlights(Model model) {
         List<Flight> flights = flightService.findAllFlights();
         model.addAttribute("flights", flights);
-        // Отображение шаблона: /resources/templates/flights/list.html
         return "flights/list";
     }
 
@@ -43,8 +42,10 @@ public class FlightController {
         List<Aircraft> availableAircrafts = aircraftService.findAllAircrafts().stream()
                 .filter(a -> a.getStatus() == Aircraft.AircraftStatus.active)
                 .toList();
+
         model.addAttribute("aircrafts", availableAircrafts);
         // Добавляем список доступных пилотов (только те, кто не назначен на незавершенные рейсы)
+
         List<User> availablePilots = flightService.getAvailablePilots(userService.findPilots(), null);
         model.addAttribute("pilots", availablePilots);
         model.addAttribute("pageTitle", "Добавить новый рейс");
@@ -55,16 +56,20 @@ public class FlightController {
     public String showEditFlightForm(@PathVariable("id") Long id, Model model) {
         Flight flight = flightService.findFlightById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Неверный ID рейса:" + id));
+
         model.addAttribute("flight", flight);
         // Показываем все самолеты, но текущий самолет рейса всегда должен быть доступен
         List<Aircraft> availableAircrafts = aircraftService.findAllAircrafts().stream()
                 .filter(a -> a.getStatus() == Aircraft.AircraftStatus.active 
                           || a.getAircraftId().equals(flight.getAircraft().getAircraftId()))
                 .toList();
+
         model.addAttribute("aircrafts", availableAircrafts);
+
         // Показываем доступных пилотов + текущего пилота рейса (если он есть)
         List<User> allPilots = userService.findPilots();
         List<User> availablePilots = flightService.getAvailablePilots(allPilots, id);
+
         // Если у рейса есть пилот, добавляем его в список, если его там еще нет
         if (flight.getPilot() != null) {
             boolean pilotAlreadyInList = availablePilots.stream()
@@ -93,14 +98,17 @@ public class FlightController {
         if (aircraft.getStatus() == Aircraft.AircraftStatus.in_maintenance) {
             model.addAttribute("error", "Нельзя назначить самолет со статусом 'in_maintenance' на рейс");
             model.addAttribute("flight", flight);
+
             List<Aircraft> availableAircrafts = aircraftService.findAllAircrafts().stream()
                     .filter(a -> a.getStatus() == Aircraft.AircraftStatus.active 
                               || (flight.getAircraft() != null && a.getAircraftId().equals(flight.getAircraft().getAircraftId())))
                     .toList();
             model.addAttribute("aircrafts", availableAircrafts);
+
             // Добавляем доступных пилотов
             List<User> allPilots = userService.findPilots();
             List<User> availablePilots = flightService.getAvailablePilots(allPilots, flight.getFlightId());
+
             // Если у рейса есть пилот, добавляем его в список, если его там еще нет
             if (flight.getPilot() != null) {
                 boolean pilotAlreadyInList = availablePilots.stream()
@@ -109,6 +117,7 @@ public class FlightController {
                     availablePilots.add(flight.getPilot());
                 }
             }
+
             model.addAttribute("pilots", availablePilots);
             model.addAttribute("pageTitle", flight.getFlightId() == null ? "Добавить новый рейс" : "Редактировать рейс ID: " + flight.getFlightId());
             return "flights/form";
@@ -121,14 +130,17 @@ public class FlightController {
             if (!flight.getDepartureTime().isBefore(flight.getArrivalTime())) {
                 model.addAttribute("error", "Время отправления должно быть раньше времени прибытия");
                 model.addAttribute("flight", flight);
+
                 List<Aircraft> availableAircrafts = aircraftService.findAllAircrafts().stream()
                         .filter(a -> a.getStatus() == Aircraft.AircraftStatus.active 
                                   || (flight.getAircraft() != null && a.getAircraftId().equals(flight.getAircraft().getAircraftId())))
                         .toList();
                 model.addAttribute("aircrafts", availableAircrafts);
+
                 // Добавляем доступных пилотов
                 List<User> allPilots = userService.findPilots();
                 List<User> availablePilots = flightService.getAvailablePilots(allPilots, flight.getFlightId());
+
                 // Если у рейса есть пилот, добавляем его в список, если его там еще нет
                 if (flight.getPilot() != null) {
                     boolean pilotAlreadyInList = availablePilots.stream()
@@ -137,6 +149,7 @@ public class FlightController {
                         availablePilots.add(flight.getPilot());
                     }
                 }
+
                 model.addAttribute("pilots", availablePilots);
                 model.addAttribute("pageTitle", flight.getFlightId() == null ? "Добавить новый рейс" : "Редактировать рейс ID: " + flight.getFlightId());
                 return "flights/form";
@@ -152,14 +165,18 @@ public class FlightController {
             if (!flightService.canAssignPilotToFlight(pilot, flight.getFlightId())) {
                 model.addAttribute("error", "Пилот уже назначен на другой незавершенный рейс и не может быть назначен на этот рейс");
                 model.addAttribute("flight", flight);
+
                 List<Aircraft> availableAircrafts = aircraftService.findAllAircrafts().stream()
                         .filter(a -> a.getStatus() == Aircraft.AircraftStatus.active 
                                   || (flight.getAircraft() != null && a.getAircraftId().equals(flight.getAircraft().getAircraftId())))
                         .toList();
+
                 model.addAttribute("aircrafts", availableAircrafts);
+
                 // Добавляем доступных пилотов
                 List<User> allPilots = userService.findPilots();
                 List<User> availablePilots = flightService.getAvailablePilots(allPilots, flight.getFlightId());
+
                 // Если у рейса есть пилот, добавляем его в список, если его там еще нет
                 if (flight.getPilot() != null) {
                     boolean pilotAlreadyInList = availablePilots.stream()
@@ -168,6 +185,7 @@ public class FlightController {
                         availablePilots.add(flight.getPilot());
                     }
                 }
+
                 model.addAttribute("pilots", availablePilots);
                 model.addAttribute("pageTitle", flight.getFlightId() == null ? "Добавить новый рейс" : "Редактировать рейс ID: " + flight.getFlightId());
                 return "flights/form";

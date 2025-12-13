@@ -65,15 +65,6 @@ public class DatabaseInitializer implements CommandLineRunner {
             System.out.println("Стартовый пользователь 'admin' создан с паролем 'admin123'.");
         }
 
-        // // Создадим стартового пассажира
-        // if (userRepository.findByUsername("passenger1").isEmpty()) {
-        //     User passenger = new User();
-        //     passenger.setUsername("passenger1");
-        //     passenger.setPasswordHash(passwordEncoder.encode("pass123"));
-        //     passenger.setRole(UserRole.passenger);
-        //     userRepository.save(passenger);
-        //     System.out.println("Стартовый пользователь 'passenger1' создан с паролем 'pass123'.");
-        // }
     }
     
     @Transactional

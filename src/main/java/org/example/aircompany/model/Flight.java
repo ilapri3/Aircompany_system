@@ -25,10 +25,10 @@ public class Flight {
 
 
     @Column(name = "departure_city", nullable = false, length = 50)
-    private String departureCity; // IATA-код
+    private String departureCity;
 
     @Column(name = "arrival_city", nullable = false, length = 50)
-    private String arrivalCity; // IATA-код
+    private String arrivalCity;
 
     @Column(name = "departure_time", nullable = false)
     private LocalDateTime departureTime;
@@ -47,7 +47,7 @@ public class Flight {
 
     // Ленивая коллекция бронирований
     @OneToMany(mappedBy = "flight")
-    @ToString.Exclude // <-- ЭТО НОВОЕ ОБЯЗАТЕЛЬНОЕ ИСПРАВЛЕНИЕ
+    @ToString.Exclude
     private List<Booking> bookings;
 
     // Enum для статусов рейса

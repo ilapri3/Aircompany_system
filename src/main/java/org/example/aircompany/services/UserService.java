@@ -34,14 +34,14 @@ public class UserService {
 
     // Метод для регистрации нового пользователя с ролью "passenger"
     public boolean registerNewPassenger(User user) {
-        // 1. Проверяем уникальность имени
+        // Проверяем уникальность имени
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             return false; // Пользователь уже существует
         }
 
-        // 2. Устанавливаем роль и хешируем пароль
+        // Устанавливаем роль и хешируем пароль
         user.setRole(UserRole.passenger);
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash())); // Принимаем "сырой" пароль из формы
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash())); // Принимаем пароль из формы
 
         userRepository.save(user);
         return true;

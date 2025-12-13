@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Passenger {
 
-    // PK совпадает с FK к users
     @Id
     @Column(name = "user_id")
     private Long userId;

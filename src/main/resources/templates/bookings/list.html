@@ -21,7 +21,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <!-- <th>ID</th> -->
                                 <th>Пассажир</th>
                                 <th>Рейс</th>
                                 <th>Дата бронирования</th>
@@ -32,7 +31,6 @@
                         </thead>
                         <tbody>
                             <tr th:each="booking : ${bookings}">
-                                <!-- <td th:text="${booking.bookingId}"></td> -->
                                 <td th:text="${booking.user.username}"></td>
                                 <td th:text="${booking.flight.flightNumber}"></td>
                                 <td th:text="${#temporals.format(booking.bookingDate, 'dd.MM.yyyy HH:mm')}"></td>

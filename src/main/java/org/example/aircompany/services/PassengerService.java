@@ -24,7 +24,7 @@ public class PassengerService {
 
         Passenger passenger = existing.orElseGet(Passenger::new);
 
-        passenger.setUser(user); // @MapsId
+        passenger.setUser(user);
         passenger.setFirstName(form.getFirstName());
         passenger.setLastName(form.getLastName());
         passenger.setPassportNumber(form.getPassportNumber());

@@ -22,7 +22,6 @@ public class AircraftController {
     public String listAircrafts(Model model) {
         List<Aircraft> aircrafts = aircraftService.findAllAircrafts();
         model.addAttribute("aircrafts", aircrafts);
-        // Шаблон: /resources/templates/aircrafts/list.html
         return "aircrafts/list";
     }
 
@@ -31,7 +30,6 @@ public class AircraftController {
     public String showAircraftForm(Model model) {
         model.addAttribute("aircraft", new Aircraft());
         model.addAttribute("pageTitle", "Добавить новый самолет");
-        // Шаблон: /resources/templates/aircrafts/form.html
         return "aircrafts/form";
     }
 
@@ -45,11 +43,6 @@ public class AircraftController {
     }
 
     /** 3. Обработка сохранения самолета (Create/Update Submit) */
-//    @PostMapping("/save")
-//    public String saveAircraft(@ModelAttribute("aircraft") Aircraft aircraft) {
-//        aircraftService.saveAircraft(aircraft);
-//        return "redirect:/booking-staff/aircrafts";
-//    }
     @PostMapping("/save")
     public String saveAircraft(@ModelAttribute("aircraft") Aircraft aircraft) {
         try {

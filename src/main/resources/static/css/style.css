@@ -1,8 +1,3 @@
-/* ============================================
-   Aircompany - Modern UI Stylesheet
-   ============================================ */
-
-/* === CSS Variables === */
 :root {
   --primary-color: #2563eb;
   --primary-hover: #1d4ed8;
@@ -27,7 +22,6 @@
   --spacing-xl: 3rem;
 }
 
-/* === Reset & Base Styles === */
 * {
   margin: 0;
   padding: 0;
@@ -45,7 +39,7 @@ body {
   flex-direction: column;
 }
 
-/* === Layout === */
+/* Layout */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -58,7 +52,7 @@ body {
   padding: var(--spacing-lg) 0;
 }
 
-/* === Header / Navigation === */
+/* Header Navigation */
 .header {
   background-color: var(--surface);
   border-bottom: 1px solid var(--border-color);
@@ -126,7 +120,7 @@ body {
   flex-shrink: 0;
 }
 
-/* === Footer === */
+/* Footer */
 .footer {
   background-color: var(--surface);
   border-top: 1px solid var(--border-color);
@@ -137,7 +131,7 @@ body {
   margin-top: auto;
 }
 
-/* === Typography === */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
   margin-bottom: var(--spacing-md);
@@ -163,7 +157,7 @@ p {
   margin-bottom: var(--spacing-sm);
 }
 
-/* === Cards === */
+/* Cards */
 .card {
   background-color: var(--surface);
   border-radius: var(--border-radius);
@@ -178,7 +172,7 @@ p {
   margin-bottom: var(--spacing-md);
 }
 
-/* === Buttons === */
+/* Buttons */
 .btn {
   display: inline-block;
   padding: 0.625rem 1.25rem;
@@ -239,7 +233,7 @@ p {
   font-size: 0.875rem;
 }
 
-/* === Header Buttons (White with black text) === */
+/* Header Buttons */
 .header .btn-primary,
 .header .btn-outline,
 .header .navbar-nav .btn-primary,
@@ -264,7 +258,7 @@ p {
   box-shadow: none !important; /* Убираем тень при наведении */
 }
 
-/* === Forms === */
+/* Forms */
 .form-group {
   margin-bottom: var(--spacing-md);
 }
@@ -308,7 +302,7 @@ textarea.form-control {
   min-height: 100px;
 }
 
-/* === Tables === */
+/* Tables */
 .table-container {
   overflow-x: auto;
   margin-bottom: var(--spacing-md);
@@ -358,7 +352,7 @@ textarea.form-control {
   flex-wrap: wrap;
 }
 
-/* === Alerts / Messages === */
+/* Messages */
 .alert {
   padding: var(--spacing-md);
   border-radius: var(--border-radius);
@@ -390,7 +384,7 @@ textarea.form-control {
   color: #1e40af;
 }
 
-/* === Navigation Cards / Modules === */
+/* Modules */
 .module-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -443,7 +437,7 @@ textarea.form-control {
   padding-left: var(--spacing-sm);
 }
 
-/* === Stats / Lists === */
+/* Stats */
 .stats-list {
   list-style: none;
   padding: 0;
@@ -464,7 +458,7 @@ textarea.form-control {
   color: var(--text-primary);
 }
 
-/* === Utility Classes === */
+/* Utility Classes */
 .text-center {
   text-align: center;
 }
@@ -491,7 +485,7 @@ textarea.form-control {
 .gap-2 { gap: var(--spacing-sm); }
 .gap-3 { gap: var(--spacing-md); }
 
-/* === Responsive === */
+/* Responsive */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -538,7 +532,7 @@ textarea.form-control {
   }
 }
 
-/* === Landing Page Styles === */
+/* Landing Page Styles */
 .hero-section {
   background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
   color: white;
@@ -597,12 +591,12 @@ textarea.form-control {
   font-weight: 600;
 }
 
-/* === Hero Section Buttons === */
+/* Hero Section Buttons */
 .hero-section .btn-primary,
 .hero-section .btn-outline,
 .hero-actions .btn-primary,
 .hero-actions .btn-outline {
-  background-color: #60a5fa !important; /* Светлый синий */
+  background-color: #60a5fa !important;
   color: white !important;
   border: 1px solid #60a5fa !important;
 }
@@ -668,7 +662,6 @@ textarea.form-control {
   margin: 0;
 }
 
-/* Responsive adjustments for landing page */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;

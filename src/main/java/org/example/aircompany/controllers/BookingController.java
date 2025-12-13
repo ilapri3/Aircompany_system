@@ -3,7 +3,7 @@ package org.example.aircompany.controllers;
 import org.example.aircompany.model.Booking;
 import org.example.aircompany.services.BookingService;
 import org.example.aircompany.services.FlightService;
-import org.example.aircompany.services.UserService; // Нужен для выпадающего списка пользователей
+import org.example.aircompany.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class BookingController {
 
     private final BookingService bookingService;
     private final FlightService flightService;
-    private final UserService userService; // Инжектируем UserService для получения списка пользователей
+    private final UserService userService;
 
     public BookingController(BookingService bookingService, FlightService flightService, UserService userService) {
         this.bookingService = bookingService;
@@ -26,7 +26,6 @@ public class BookingController {
     /** 1. Список всех бронирований (Read All) */
     @GetMapping
     public String listBookings(Model model) {
-        // Убедитесь, что ваш сервис/репозиторий использует JOIN FETCH или EAGER для Flight и User, чтобы избежать LazyInitializationException
         List<Booking> bookings = bookingService.findAllBookings();
         model.addAttribute("bookings", bookings);
         return "bookings/list";
@@ -42,7 +41,7 @@ public class BookingController {
 
         // Передаем в модель списки для заполнения <select> элементов в bookings/form.html
         model.addAttribute("flights", flightService.findAllFlights());
-        model.addAttribute("users", userService.findAllUsers()); // Предполагая, что у вас есть такой метод в UserService
+        model.addAttribute("users", userService.findAllUsers());
 
         model.addAttribute("booking", booking);
         model.addAttribute("pageTitle", "Добавить новое бронирование");
@@ -58,7 +57,7 @@ public class BookingController {
 
         model.addAttribute("booking", booking);
 
-        // Передаем списки для потенциального редактирования FK (обязательно!)
+        // Передаем списки для потенциального редактирования FK
         model.addAttribute("flights", flightService.findAllFlights());
         model.addAttribute("users", userService.findAllUsers());
         
@@ -91,7 +90,6 @@ public class BookingController {
             // Устанавливаем статус confirmed для всех бронирований
             booking.setStatus(Booking.BookingStatus.confirmed);
             // Здесь Spring MVC автоматически привяжет выбранные flight и user по ID
-            // Убедитесь, что метод saveBooking также обрабатывает установку bookingDate, если это нужно
             bookingService.saveBooking(booking);
             return "redirect:/booking-staff/bookings";
         } catch (IllegalStateException e) {

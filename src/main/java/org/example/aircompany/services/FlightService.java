@@ -46,7 +46,7 @@ public class FlightService {
             if (existingFlightOpt.isPresent()) {
                 Flight existingFlight = existingFlightOpt.get();
                 
-                // Если статус рейса изменился на completed, НЕ меняем статус самолета автоматически
+                // Если статус рейса изменился на completed, не меняем статус самолета автоматически
                 // Статус самолета будет изменен только после создания лётного журнала пилотом
                 // Самолет остается в статусе in_flight до создания журнала
                 
@@ -61,7 +61,7 @@ public class FlightService {
             }
         }
         
-        // При назначении самолета на рейс (новый или обновленный)
+        // При назначении самолета на рейс новый или обновленный
         if (flight.getAircraft() != null) {
             Aircraft aircraft = flight.getAircraft();
             // Если самолет в статусе active, меняем на in_flight
@@ -75,7 +75,7 @@ public class FlightService {
     }
     
     private void updateAircraftStatusIfNeeded(Aircraft aircraft) {
-        // Проверяем, есть ли у этого самолета активные рейсы (не completed и не cancelled)
+        // Проверяем, есть ли у этого самолета активные рейсы не completed и не cancelled
         List<Flight> activeFlights = flightRepository.findByAircraft(aircraft).stream()
                 .filter(f -> f.getStatus() != Flight.FlightStatus.completed 
                           && f.getStatus() != Flight.FlightStatus.cancelled)
@@ -119,6 +119,7 @@ public class FlightService {
      * @param currentFlightId ID текущего рейса (для исключения при обновлении), может быть null
      * @return true, если пилот может быть назначен, false - если уже назначен на другой незавершенный рейс
      */
+
     public boolean canAssignPilotToFlight(User pilot, Long currentFlightId) {
         if (pilot == null) {
             return true; // Если пилот не назначен, проверка не нужна
@@ -144,6 +145,7 @@ public class FlightService {
      * @param currentFlightId ID текущего рейса (для исключения при обновлении), может быть null
      * @return список доступных пилотов (изменяемый список)
      */
+
     public List<User> getAvailablePilots(List<User> allPilots, Long currentFlightId) {
         return allPilots.stream()
                 .filter(pilot -> canAssignPilotToFlight(pilot, currentFlightId))
@@ -152,8 +154,8 @@ public class FlightService {
 
     public List<Flight> findFlightsByPilotWithoutLogs(User pilot) {
         // Получаем все рейсы пилота и фильтруем те, которые:
-        // 1. Имеют статус completed
-        // 2. Для которых еще нет отчетов
+        // Имеют статус completed
+        // Для которых еще нет отчетов
         return flightRepository.findByPilot(pilot).stream()
                 .filter(flight -> flight.getStatus() == Flight.FlightStatus.completed)
                 .filter(flight -> !flightLogRepository.existsByFlight(flight))
@@ -163,7 +165,7 @@ public class FlightService {
     public List<Flight> searchFlights(String departureCity, String arrivalCity, LocalDate date) {
 
         if (date == null) {
-            return List.of(); // или можешь возвращать flightRepository.findAll()
+            return List.of();
         }
 
         LocalDateTime dateStart = date.atStartOfDay();
@@ -182,10 +184,10 @@ public class FlightService {
     /**
      * Исправляет статусы самолетов для всех завершенных рейсов.
      * Вызывается при запуске приложения для синхронизации данных.
-     * 
-     * ВАЖНО: Статус самолета для завершенных рейсов теперь меняется только при создании
+     * Статус самолета для завершенных рейсов теперь меняется только при создании
      * лётного журнала пилотом. Самолет остается в статусе in_flight до создания журнала.
      */
+
     @Transactional
     public void fixAircraftStatusesForCompletedFlights() {
         // Находим все рейсы со статусом completed

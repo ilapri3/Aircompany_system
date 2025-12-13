@@ -38,7 +38,6 @@
                     <button type="submit" class="btn btn-primary">Найти рейсы</button>
                 </form>
 
-                <!-- Результаты -->
                 <div th:if="${searchPerformed}" class="mt-4">
                     <div th:if="${#lists.isEmpty(flights)}" class="alert alert-info">
                         <p>Рейсы не найдены. Попробуйте изменить параметры поиска.</p>

@@ -15,20 +15,21 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     Optional<Flight> findByFlightNumber(String flightNumber);
 
-    // 🔍 Поиск рейсов для пассажиров
+    // Поиск рейсов для пассажиров
     @Query("SELECT f FROM Flight f " +
             "WHERE (:departureCity IS NULL OR f.departureCity LIKE %:departureCity%) " +
             "AND (:arrivalCity IS NULL OR f.arrivalCity LIKE %:arrivalCity%) " +
             "AND (f.departureTime >= :dateStart) " +
             "AND f.status = 'scheduled' " +
             "ORDER BY f.departureTime ASC")
+
     List<Flight> searchFlights(
             @Param("departureCity") String departureCity,
             @Param("arrivalCity") String arrivalCity,
             @Param("dateStart") LocalDateTime dateStart
     );
 
-    // 🟩 НОВОЕ: рейсы, назначенные конкретному пилоту
+    // рейсы, назначенные конкретному пилоту
     List<Flight> findByPilot(User pilot);
     
     // Рейсы пилота, которые еще не завершены (не completed и не cancelled)

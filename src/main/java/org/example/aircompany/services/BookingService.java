@@ -19,7 +19,7 @@ public class BookingService {
 
     /** CRUD-операции для Сотрудника службы бронирования */
 
-    // 1. Сохранение/Обновление бронирования (Update)
+    // Сохранение/Обновление бронирования (Update)
     // Пассажир создает бронирование через отдельный контроллер, а сотрудник его обновляет (например, меняет статус).
     public Booking saveBooking(Booking booking) {
         // Проверка доступности места при изменении
@@ -36,17 +36,17 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-    // 2. Чтение всех бронирований
+    // Чтение всех бронирований
     public List<Booking> findAllBookings() {
         return bookingRepository.findAll();
     }
 
-    // 3. Чтение одного бронирования по ID
+    // Чтение одного бронирования по ID
     public Optional<Booking> findBookingById(Long id) {
         return bookingRepository.findById(id);
     }
 
-    // 4. Удаление бронирования (Delete)
+    // Удаление бронирования (Delete)
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
     }

@@ -25,18 +25,18 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private UserRole role; // Использует Enum из 4.1
+    private UserRole role;
 
-    @Column(name = "created_at") // ДОБАВИТЬ ЭТО ПОЛЕ
+    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     // Обратные связи (детали пассажира, бронирования, логи)
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @ToString.Exclude // <-- РЕКОМЕНДУЮ ДОБАВИТЬ
+    @ToString.Exclude
     private Passenger passengerDetails;
 
     @OneToMany(mappedBy = "user")
-    @ToString.Exclude // <-- ДОБАВИТЬ ЭТУ АННОТАЦИЮ
+    @ToString.Exclude
     private List<Booking> bookings;
 
     @OneToMany(mappedBy = "pilot", cascade = CascadeType.ALL)

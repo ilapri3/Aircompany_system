@@ -21,7 +21,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <!-- <th>ID</th> -->
                                 <th>Номер рейса</th>
                                 <th>Откуда</th>
                                 <th>Куда</th>
@@ -35,7 +34,6 @@
                         </thead>
                         <tbody>
                             <tr th:each="f : ${flights}">
-                                <!-- <td th:text="${f.flightId}"></td> -->
                                 <td th:text="${f.flightNumber}"></td>
                                 <td th:text="${f.departureCity}"></td>
                                 <td th:text="${f.arrivalCity}"></td>
