@@ -329,6 +329,35 @@ textarea.form-control {
   border-bottom: 2px solid var(--border-color);
 }
 
+.table th.sortable {
+  cursor: pointer;
+  position: relative;
+  padding-right: calc(var(--spacing-md) + 0.75rem);
+  user-select: none;
+}
+
+.table th.sortable::after {
+  content: '⇅';
+  position: absolute;
+  right: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  opacity: 0.6;
+  transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.table th.sorted-asc::after {
+  content: '▲';
+  color: var(--primary-color);
+  opacity: 1;
+}
+
+.table th.sorted-desc::after {
+  content: '▼';
+  color: var(--primary-color);
+  opacity: 1;
+}
+
 .table td {
   padding: var(--spacing-md);
   border-bottom: 1px solid var(--border-color);

@@ -124,8 +124,4 @@ public class UserService {
         // Passenger и FlightLog удалятся автоматически благодаря cascade = CascadeType.ALL
         userRepository.delete(user);
     }
-
-
-
-
 }

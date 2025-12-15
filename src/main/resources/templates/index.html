@@ -12,6 +12,9 @@
         <nav class="navbar">
             <a th:href="@{/}" class="navbar-brand">✈ Авиакомпания</a>
             <ul class="navbar-nav">
+                <li>
+                    <a th:href="@{/about}">Об авторе</a>
+                </li>
                 <li sec:authorize="isAuthenticated()">
                     <div class="user-info">
                         <span sec:authentication="name">Пользователь</span>
