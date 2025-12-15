@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Об авторе</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="layout/fragments :: header"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="card">
+                <h1>Об авторе</h1>
+                <p style="margin-bottom: var(--spacing-md); color: var(--text-secondary);">
+                    Страница с краткой информацией о разработчике проекта.
+                </p>
+
+                <div class="module-grid">
+                    <div class="module-card">
+                        <h3>Основные данные</h3>
+                        <ul>
+                            <li><strong>ФИО:</strong> Приемышев Илья Александрович</li>
+                            <li><strong>Группа / учебное заведение:</strong> ИД23-2, Финансовый университет при Правительстве РФ</li>
+                            <li><strong>Почта:</strong> 233460@edu.fa.ru</li>
+                            <li><strong>Телефон:</strong> +7(985)624-20-38</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Опыт с технологиями</h3>
+                        <p>
+                            Практический опыт работы со стеком Spring Boot, Spring Security,
+                            Thymeleaf, JPA/Hibernate, а также работа с модулем базы данных MySQL.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Сроки проекта</h3>
+                        <ul>
+                            <li><strong>Начало работы:</strong> 30.10.2025</li>
+                            <li><strong>Завершение работы:</strong> 15.12.2025</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <a th:href="@{/}" class="btn btn-outline">На главную страницу</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="layout/fragments :: footer"></div>
+</body>
+</html>
+
